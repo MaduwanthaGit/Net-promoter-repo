@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div data-role="view" data-stretch="true" data-reload="true" id="chart_view" data-init="init"
+             >
+            <div data-role="header">
+                <div data-role="navbar">
+                    <a data-role="backbutton" data-align="left">Back</a>
+                    CHARTS
+                    <a data-role="button" data-align="right" href="" >Next</a>
+                </div>
+            </div>
+            <div
+                id="touchSurface"
+                data-role="touch"
+                data-enable-swipe="1"
+                data-swipe="myTouch.swipe"
+                style=" height: 100%; width:100%; position:absolute">
+
+                <div  style=" height:100%; width:100%; position:relative" >
+                    <div style="width:80%; margin-left:10%;margin-top:15%; height:15%; position:relative text-align:center">
+                        <p id="name" style="text-align: center;  font-size: larger;"></p>
+                        <p id="addb" style="text-align: center; font-family: sans-serif; font-size: samll;"></p>
+                        <p id="phone_no" style="display:none"></p>
+                    </div>
+                    <div id="chart_default" style="width:90%; margin-left:5%;margin-top:3%; height:60%; position:relative">
+                        <div id="chart_nps" style=" width:25%;height:90%; position:relative; float:left; display: inline; ">
+                            #=createChartNPS(name)#
+                        </div>
+                        <div class="devider_line" style="width:1%;height:100%; position:relative; float:left; display: inline; margin:1%">
+
+                        </div>
+                        <div id="chart" style="width:35%;height:100%; position:relative; float:left;display: inline;">
+                            #=createChart(name)#
+                        </div>
+                        <div class="devider_line" style="width:1%;height:100%; position:relative; float:left; display: inline; margin:1%">
+
+                        </div>
+                        <div id="chart_local" style=" width:15%;height:98%; position:relative; float:left; display: inline;">
+                            #=createChart(name)#
+                        </div>
+                        <div class="devider_line" style="width:1%;height:100%; position:relative; float:left; display: inline; margin:1%">
+
+                        </div>
+                        <div id="chart_state" style=" width:15%;height:98%; position:relative; float:left">
+                            #=createChart(name)#
+                        </div>
+                    </div>
+                    
+                    <div class="hide" id="chart_compare" style="width:90%; margin-left:5%;margin-top:3%; height:70%; position:relative">
+                        <div id="chart_compare_div" style="width:80%;height:100%; position:relative; float:left;display: inline;">
+                            #=createChart(name)#
+                        </div>
+                        <div class="devider_line" style="width:1%;height:100%; position:relative; float:left; display: inline; margin:1%">
+
+                        </div>
+                        <div id="chart_local1" style=" width:15%;height:91%; position:relative; float:left; display: inline;">
+                            #=createChart(name)#
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div data-role="footer" data-style="inset">
+                <div data-role="navbar">
+                    <ol class="km-pages" style=" height:5%; width:100%; position:relative" id="pager">
+
+                    </ol>
+                </div>
+            </div>
+
+            <style scoped>
+                .hide
+                {
+                    display: none;    
+                }
+                
+                .km-ios7 .km-navbar, .km-ios7 .k-toolbar, .km-ios7 .km-tabstrip
+                {
+                    border-color: transparent;
+                }
+                .km-ios7 .km-navbar, .km-ios7 .k-toolbar, .km-ios7 .km-tabstrip
+                {
+                    background-color: transparent;
+                }
+                .devider_line
+                { 
+                    background: black;
+                    background: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(white), color-stop(50%, black));
+                }
+            </style>
+                
+            <script>
+                var str_html = "";
+                var i = 0;
+                var compareListNPS = []; 
+                var compareListName = []; 
+                
+                function init() {
+                
+                console.log(selected_hospital_array);
+                
+                    for (i; i<= selected_hospital_array.length; i++) {
+                
+                        str_html = str_html + "<li class='' id='" + i + "' ></li>";
+                        if(i < selected_hospital_array.length){
+                            compareListNPS.push(selected_hospital_array[i].nps);
+                            compareListName.push(createName(selected_hospital_array[i].name));
+                        }
+                        
+                    }
+                    i = 0;  
+                    
+                    $("#pager").append(str_html);
+                    $("#" + i).addClass("km-current-page");
+                    $("#name").html(selected_hospital_array[i].name);
+                    $("#addb").html(selected_hospital_array[i].add);
+                    $("#phone_no").html(selected_hospital_array[i].phone_no);
+                    createChart(selected_hospital_array[i].top_box, selected_hospital_array[i].passive, selected_hospital_array[i].detector)
+                    createChartNPS(selected_hospital_array[i].nps);
+                    createChartLocal(selected_hospital_array[i].national);
+                    createChartState(selected_hospital_array[i].score);
+                }
+                
+                
+                function createChart(top_box, passive, detector) {
+                    chart = $("#chart").kendoChart({
+                                                       title: {
+                            text: ""
+                        },
+                            
+                                                       seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                   visible: true,
+                                                                   font: "10px Arial",
+                                                                   format: "{0}%",
+                                                                   background: "transparent"
+                                                               }
+                        },
+                                                       seriesColors: ["#79747A", "#919690","red"],
+                                                       series: [{ data: [parseInt(top_box),parseInt(passive),parseInt(detector)]}],
+                                                       valueAxis: {
+                            min: 0, // added this line
+                            max: 102, // added this line
+                            majorGridLines: {
+                                                                   visible: false
+                                                               },
+                            visible: false
+                        },
+                                                       categoryAxis: {
+                            categories: ["Promoters","Passives","Detractors"],
+                            labels: { rotation: -45 },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                   visible: false
+                                                               },
+                            majorGridLines: {
+                                                                   visible: false
+                                                               }
+                        },
+                                                       tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                   });
+                    return chart;
+                }
+                    
+                function createChartNPS(nps) {
+                    chartNPS = $("#chart_nps").kendoChart({
+                                                              title: {
+                            text: ""
+                        },
+                            
+                                                              seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                          visible: true,
+                                                                          font: "10px Arial",
+                                                                          format: "{0}%",
+                                                                          background: "transparent"
+                                                                      }
+                        },
+                                                              seriesColors: ["black"],
+                                                              series: [{ data: [parseInt(nps)]}],
+                                                              valueAxis: {
+                            min: 0, // added this line
+                            max: 102, // added this line
+                            majorGridLines: {
+                                                                          visible: false
+                                                                      },
+                            visible: false
+                        },
+                                                              categoryAxis: {
+                            categories: ["NPS"],
+                            labels: { rotation: 0 },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                          visible: false
+                                                                      },
+                            majorGridLines: {
+                                                                          visible: false
+                                                                      }
+                        },
+                                                              tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                          });
+                    return chartNPS;
+                }
+                    
+                function createChartLocal(nps) {
+                    
+                    chartLocal = $("#chart_local").kendoChart({
+                                                                  title: {
+                            text: ""
+                        },
+                            
+                                                                  seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                              visible: true,
+                                                                              font: "10px Arial",
+                                                                              format: "{0}%",
+                                                                              background: "transparent"
+                                                                          }
+                        },
+                                                                  seriesColors: ["#919690", "#919690","red"],
+                                                                  series: [{ data: [parseInt(nps)]}],
+                                                                  valueAxis: {
+                            min: 0, // added this line
+                            max: 102, // added this line
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          },
+                            visible: false
+                        },
+                                                                  categoryAxis: {
+                            categories: ["National"],
+                            labels: { rotation: -45 },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                              visible: false
+                                                                          },
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          }
+                        },
+                                                                  tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                              });
+                    return chartLocal;
+                }
+                
+                function createChartLocal1(nps) {
+                    
+                    chartLocal = $("#chart_local1").kendoChart({
+                                                                  title: {
+                            text: ""
+                        },
+                            
+                                                                  seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                              visible: true,
+                                                                              font: "10px Arial",
+                                                                              format: "{0}%",
+                                                                              background: "transparent"
+                                                                          }
+                        },
+                                                                  seriesColors: ["#919690", "#919690","red"],
+                                                                  series: [{ data: [parseInt(nps)]}],
+                                                                  valueAxis: {
+                            min: 0, // added this line
+                            max: 102, // added this line
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          },
+                            visible: false
+                        },
+                                                                  categoryAxis: {
+                            categories: ["National"],
+                            labels: { rotation: -60 },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                              visible: false
+                                                                          },
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          }
+                        },
+                                                                  tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                              });
+                    return chartLocal;
+                }
+                    
+                function createChartState(nps) {
+                    chartState = $("#chart_state").kendoChart({
+                                                                  title: {
+                            text: ""
+                        },
+                            
+                                                                  seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                              visible: true,
+                                                                              font: "10px Arial",
+                                                                              format: "{0}%",
+                                                                              background: "transparent"
+                                                                          }
+                        },
+                                                                  seriesColors: ["#919690", "#919690","red"],
+                                                                  series: [{ data: [parseInt(nps)]}],
+                                                                  valueAxis: {
+                            min: 0, // added this line
+                            max: 102, // added this line
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          },
+                            visible: false
+                        },
+                                                                  categoryAxis: {
+                            categories: ["State"],
+                            labels: { rotation: -45 },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                              visible: false
+                                                                          },
+                            majorGridLines: {
+                                                                              visible: false
+                                                                          }
+                        },
+                                                                  tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                              });
+                    return chartState;
+                }
+                
+                function createChartCompare(nps,name) {
+                    
+                    
+                    chartCompare = $("#chart_compare_div").kendoChart({
+                                                              title: {
+                            text: ""
+                        },
+                            
+                                                              seriesDefaults: {
+                            type: "column",
+                            labels: {
+                                                                          visible: true,
+                                                                          font: "10px Arial",
+                                                                          format: "{0}%",
+                                                                          background: "transparent"
+                                                                      }
+                        },
+                                                              seriesColors: ["black"],
+                                                              series: [{ data: nps}],
+                                                              valueAxis: {
+                                                                  min: 0, // added this line
+                            max: 102, // added this line
+                            
+                            majorGridLines: {
+                                                                          visible: false
+                                                                      },
+                            visible: false
+                        },
+                                                              categoryAxis: {
+                            categories: name,
+                            labels: { rotation: -60,
+                                      
+                                       font: "7px Arial,Helvetica,sans-serif"
+       
+                            },
+                            axisCrossingValue: [0, 0, 100, 100],
+                            line: {
+                                                                          visible: false
+                                                                      },
+                            majorGridLines: {
+                                                                          visible: false
+                                                                      }
+                        },
+                                                              tooltip: {
+                            visible: false,
+                            format: "{0}"
+                        }
+                                                          });
+                    return chartCompare;
+                }
+                    
+                window.myTouch = {
+                    swipe: function(e) {
+                        if (e.direction == "right" && i >0) {
+                            i = i - 1;
+                            if(i == selected_hospital_array.length-1){
+                                $("#chart_compare").addClass("hide");
+                                $("#chart_default").removeClass("hide"); 
+                            }
+                            $("#name").html(selected_hospital_array[i].name);
+                            $("#addb").html(selected_hospital_array[i].add);
+                            $("#phone_no").html(selected_hospital_array[i].phone_no);
+                            $("#chart").html(selected_hospital_array[i].phone_no);
+                            createChart(selected_hospital_array[i].top_box, selected_hospital_array[i].passive, selected_hospital_array[i].detector)
+                            createChartNPS(selected_hospital_array[i].nps);
+                            createChartLocal(selected_hospital_array[i].national);
+                            createChartState(selected_hospital_array[i].score);
+                            addClassRight(i);
+                        }else if(e.direction == "left" && i < selected_hospital_array.length-1){
+                            i = i + 1;
+                            $("#name").html(selected_hospital_array[i].name);
+                            $("#addb").html(selected_hospital_array[i].add);
+                            $("#phone_no").html(selected_hospital_array[i].phone_no);
+                            $("#chart").html(selected_hospital_array[i].phone_no);
+                            createChart(selected_hospital_array[i].top_box, selected_hospital_array[i].passive, selected_hospital_array[i].detector)
+                            createChartNPS(selected_hospital_array[i].nps);
+                            createChartLocal(selected_hospital_array[i].national);
+                            createChartState(selected_hospital_array[i].score);
+                            addClassLeft(i);
+                        }else if(e.direction == "left" && i == selected_hospital_array.length-1){
+                            i = i + 1;
+                            $("#name").html("Compare Hospitals");
+                            $("#addb").html("Net Promoter Score");
+                            $("#chart_default").addClass("hide");
+                            $("#chart_compare").removeClass("hide");
+                            createChartLocal(selected_hospital_array[0].national);
+                            createChartCompare(compareListNPS,compareListName);
+                            createChartLocal1(selected_hospital_array[0].national);
+                            addClassLeft(i);
+                        }
+                    }
+                }
+                
+                function createName(name){
+                    if(name.length>20){
+                        name = name.substring(0, 18)+"..";
+                        return name;
+                    }else{
+                        return name;
+                    }
+                }
+                    
+                function addClassLeft(i) {
+                    $("#" + i).addClass("km-current-page");
+                    $("#" + (i - 1)).removeClass("km-current-page");
+                }
+                    
+                function addClassRight(i) {
+                    $("#" + i).addClass("km-current-page");
+                    $("#" + (i + 1)).removeClass("km-current-page");
+                }
+            </script>
+
+        </div>
+
+    </body>
+
+</html>

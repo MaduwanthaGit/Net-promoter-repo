@@ -2,10 +2,10 @@
   "ProjectName": "NetPromo",
   "ProjectGuid": "57611544-ad18-4c0c-9a5e-1e2eb6265d3a",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.NetPromo",
-  "DisplayName": "NetPromo",
-  "Author": "",
-  "Description": "",
+  "AppIdentifier": "com.netpromoter.NetPromoter",
+  "DisplayName": "NetPromoter",
+  "Author": "Maduwantha",
+  "Description": "NetPromoter",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
@@ -14,14 +14,13 @@
   ],
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.7.0",
   "AndroidPermissions": [],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "false",
-  "iOSStatusBarStyle": "Default",
+  "iOSStatusBarStyle": "BlackOpaque",
   "Framework": "Cordova",
   "WP8TileTitle": "",
   "WP8Publisher": "",
@@ -36,5 +35,27 @@
     "ID_RESOLUTION_WVGA",
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
+  ],
+  "CorePlugins": [
+    "de.appplant.cordova.plugin.local-notification@0.8.0dev4",
+    "org.apache.cordova.battery-status",
+    "org.apache.cordova.camera",
+    "org.apache.cordova.console",
+    "org.apache.cordova.contacts",
+    "org.apache.cordova.device",
+    "org.apache.cordova.device-motion",
+    "org.apache.cordova.device-orientation",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer",
+    "org.apache.cordova.geolocation",
+    "org.apache.cordova.globalization",
+    "org.apache.cordova.inappbrowser",
+    "org.apache.cordova.media",
+    "org.apache.cordova.media-capture",
+    "org.apache.cordova.network-information",
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar",
+    "org.apache.cordova.vibration"
   ]
 }

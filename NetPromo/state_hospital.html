@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.common-material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.dataviz.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.dataviz.material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.mobile.all.min.css" />
+
+        <script src="http://cdn.kendostatic.com/2015.1.408/js/jquery.min.js"></script>
+        <script src="http://cdn.kendostatic.com/2015.1.408/js/kendo.all.min.js"></script>
+    </head>
+
+    <body>
+
+        <div data-role="view" id="state-hos"  data-init="mobileListViewTemplatesInit" data-title="ListView" data-show="afterShow" data-reload="true">
+
+            <div data-role="header">
+                <div data-role="navbar">
+                    <a data-role="backbutton" data-align="left">Back</a>
+                    HOSPITALS
+                    <a data-role="button" data-align="right" href="selected_hospital.html" >Next</a>
+                </div>
+            </div>
+
+            <ul id="hospatal_list" data-item-change="itemChange">
+
+            </ul>
+            <div data-role="footer" data-style="inset">
+                <div data-role="navbar">
+                    NET PROMOTER SCORE
+                </div>
+            </div>
+            <script type="text/x-kendo-template" id="hospatal_list_Template">
+                <label data-corners="true">
+
+                    <h1 style="font-style:strong"><b>${name}</b></h1>
+                    <h1 id="add">${score}</h1>
+                    <h1>${score}</h1>
+                    <input type="checkbox">
+                    <div style="display:none">
+                        <p id="nps">${nps}</p>
+                        <p id="top">${top_box}</p>
+                        <p id="passive">${passive}</p>
+                        <p id="detector">${detector}</p>
+                        <p id="detector"></p>
+                    </div>
+                </label>
+            </script>
+            <style>
+                h1
+                {
+                
+                    font-size: 11px;
+                    font-weight: normal;
+                    margin: 0px;
+                    overflow: visible;
+                    /* padding:0px; */
+                    text-align: left;
+                }
+            </style>
+            <script>
+                //var app = new kendo.mobile.Application(document.body);
+                
+                var dataSource;
+                var state_hos = function(name, add, phone_no, nps, top_box, passive, detector) {
+                    this.name = name;
+                    this.add = add;
+                    this.phone_no = phone_no;
+                    this.nps = nps;
+                    this.top_box = top_box;
+                    this.passive = passive;
+                    this.detector = detector;
+                };
+                
+                var state_hos_list_arr = [];
+                
+                function mobileListViewTemplatesInit() {
+                
+                    var dataSource;
+                $.ajax({
+                               type: "GET",
+                               url: "./xml/NationalScore.xml",
+                               success: function(data) {
+                                            $(data).find("National").each(function() {
+                                                national = $(this).find("Score").text();
+                                                //alert(national);
+                                            });
+                                        },
+                                error :{}
+                });
+                
+                    $.ajax({
+                               type: "GET",
+                               url: "./xml/Hospitals.xml",
+                               success: function(data) {
+                                   $(data).find("Hospital").each(function() {
+                                       if ($(this).find("State").text() === state) {
+                                           state_hos_list_arr.push(new state_hos($(this).find("HospitalName").text(),
+                                                                                 $(this).find("Address").text().replace(" ", ", "),
+                                                                                 createNo($(this).find("PhoneNumber").text()),
+                                                                                 $(this).find("RecommendNPS").text(),
+                                                                                 $(this).find("RecommendTopBox").text(),
+                                                                                 $(this).find("RecommendPassive").text(),
+                                                                                 $(this).find("RecommendDetractor").text()
+                                               ));	
+                                       }
+                                   });
+                                   
+                                   $("#hospatal_list").kendoMobileListView({
+                                                                               //dataSource: data,
+                                                                               dataSource: kendo.data.DataSource.create({data: state_hos_list_arr}),
+                                                                               template:function(e){
+                                                                                var selected = false;
+                                                                                    for(f in selected_hospital_array){
+                                                                                            if(e.name == selected_hospital_array[f].name){
+                                                                                                        selected = true;
+                                                                                                }
+                                                                                         }
+                                                                                    if(selected){return "<label data-corners='true'>"+
+
+                    "<h1 style='font-style:strong'><b>"+e.name+"</b></h1>"+
+                    "<h1 id='add'>"+e.add+"</h1>"+
+                    "<h1>"+e.phone_no+"</h1>"+
+                    "<input type='checkbox' checked='checked'>"+
+                    "<div style='display:none'>"+
+                        "<p id='nps'>"+e.nps+"</p>"+
+                        "<p id='top'>"+e.top_box+"</p>"+
+                        "<p id='passive'>"+e.passive+"</p>"+
+                        "<p id='detector'>"+e.detector+"</p>"+
+                        "<p id='detector'>"+national+"</p>"+
+                        "<p id="+score+"></p>"+
+                    "</div>"+
+                "</label>"}else{
+                                                                                        return "<label data-corners='true'>"+
+
+                    "<h1 style='font-style:strong'><b>"+e.name+"</b></h1>"+
+                    "<h1 id='add'>"+e.add+"</h1>"+
+                    "<h1>"+e.phone_no+"</h1>"+
+                    "<input type='checkbox'>"+
+                    "<div style='display:none'>"+
+                        "<p id='nps'>"+e.nps+"</p>"+
+                        "<p id='top'>"+e.top_box+"</p>"+
+                        "<p id='passive'>"+e.passive+"</p>"+
+                        "<p id='detector'>"+e.detector+"</p>"+
+                        "<p id='detector'>"+national+"</p>"+
+                        "<p id="+score+"></p>"+                                                                
+                    "</div>"+
+                "</label>"}
+                
+                                                                                    
+                
+                                                                                }, 
+                
+                               
+                
+                
+                                                                                               click: function(e) {
+                                                                                   var index = $(e.item).index();
+                                                                                   dataItem = $(e.item).find('input');
+                                                                                   Item = this.dataSource.view()[index];
+                                                                                   if (dataItem.is(':checked')) {
+                                                                                       for (i in selected_hospital_array) {
+                                                                                           console.log(selected_hospital_array[i].name);
+                                                                                           if (Item.name === selected_hospital_array[i].name) {
+                                                                                               selected_hospital_array.splice(i, 1);
+                                                                                           }
+                                                                                       }   
+                                                                                   }else {
+                                                                                       var name = Item.name;
+                                                                                       var NPS = Item.nps;
+                                                                                       var top = Item.top_box;
+                                                                                       var passive = Item.passive;
+                                                                                       var detector = Item.detector;
+                                                                                       var add = Item.add;
+                                                                                       var phone = Item.phone_no;
+                                                                                       console.log(name + NPS + top + passive + detector + add);
+                                                                                       addToList(name, NPS, top, passive, detector, add, phone,score,national);
+                                                                                   }
+                                                                               },
+                                                                               filterable: {
+                                           field: "name",  // dummy field to get the filterable working
+                                           placeholder: "Search..."
+                                       },
+                                                                           
+                                                                           });
+                                                                                      
+                               },
+                               error: function(ts) {
+                                   //alert("ererer");
+                                                                                       
+                               }
+                           });
+                    
+                    $('[type="search"]').on("keyup", function () {
+                        var filterTerm = $(this).val();
+                        $("#hospatal_list").data("kendoMobileListView").dataSource.filter({
+                                                                                              logic: "or",
+                                                                                              filters: [
+                                { field: "name", operator: "contains", value: filterTerm }
+                            
+                            ]
+                                                                                          });
+                    });
+                    
+                    $("#search")
+                        .kendoAutoComplete({
+                                               dataSource: state_hos_list_arr
+                                           })
+                        .closest(".k-widget")
+                        .addClass("k-textbox k-space-right")
+                        .append('<span class="k-icon k-i-search"></span>');
+                }
+                
+                function afterShow(e) {
+                    
+                }
+                
+                function createNo(str){
+                    var res1 = str.substr(0, 3);
+                    res1 = "("+res1+")";
+                    
+                    var res2 = str.substr(3, 10);
+                    var res3 = res2.substr(0,3);
+                    var res4 = res2.substr(3,8);
+                    res1 = res1+" "+res3+"-"+res4;
+                    
+                    return res1;
+                }
+            
+            </script>
+        </div>
+    
+    </body>
+</html>

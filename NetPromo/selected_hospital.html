@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div data-role="view" id="state-hos"  data-init="mobileListViewTemplatesInit" data-title="ListView" data-show="afterShow" data-reload="true">
+
+            <div data-role="header">
+                <div data-role="navbar">
+                    <a data-role="backbutton" data-align="left">Back</a>
+                    SELECTED
+                    <a data-role="button" data-align="right" href="test.html">Next</a>
+                </div>
+            </div>
+
+            <ul id="selected_hospatal_list" data-item-change="itemChange" data-style="inset">
+
+            </ul>
+            
+            <div data-role="footer" data-style="inset">
+                <div data-role="navbar">
+                    NET PROMOTER SCORE
+                </div>
+            </div>
+            <script type="text/x-kendo-template" id="selected_hospatal_list_Template">
+                <div data-align="left" style="float:left; max-width:75%">
+                <h1><b>${name}</b></h1>
+                <h1>${add}</h1>
+                <h1>${phone_no}</h1>
+                </div>
+                <div data-align="right" style="float:right">
+                <p data-align="right">${nps} %</p>
+                </div>
+                
+                <a href="\\#" data-role="button" class="delete" ><p>Delete</p></a>
+            </script>
+            <style scoped>
+                #selected_hospatal_list .delete
+                {
+                    display: none;
+                    position: absolute;
+                    top: .0em;
+                    right: .5em;
+                    width: 60px;
+                    height: 100%;
+                    background-color: #bd2729;
+                    text-align: center;
+                    color: #fff;
+                }
+                
+                #selected_hospatal_list .collapsed
+                {
+                    border: none;
+                    height: 0;
+                    padding: 0;
+                    -webkit-transition: all .3s;
+                    transition: all .3s;
+                }
+            </style>
+            <script>
+                //var app = new kendo.mobile.Application(document.body);
+                
+                
+                var state_hos_list_arr = [];
+                
+                function mobileListViewTemplatesInit() {
+                    var dataSource = new kendo.data.DataSource({data:selected_hospital_array});
+                    
+                    $("#selected_hospatal_list").kendoMobileListView({
+                                                                         
+                                                                         dataSource: kendo.data.DataSource.create({data: selected_hospital_array}),
+                                                                         template: $("#selected_hospatal_list_Template").html(),
+                                                                         change : function() {
+                                                                             // Find selected 
+                                                                             var selected = this.select();
+                                                                             
+                                                                         }
+                                                                     
+                                                                     }).kendoTouch({
+                                                                                       filter: ">li",
+                                                                                       enableSwipe: true,
+                                                                                       touchstart: touchstart,
+                                                                                       swipe: swipe
+                                                                                   });
+                    
+                    function swipe(e) {
+                        var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
+                        button.expand().duration(200).play();
+                    }
+                    
+                    function touchstart(e) {
+                        var target = $(e.touch.initialTouch),
+                            listview = $("#selected_hospatal_list").data("kendoMobileListView"),
+                            model,
+                            button = $(e.touch.target).find("[data-role=button]:visible");
+                        
+                        if (target.closest("[data-role=button]")[0]) {
+                            target.closest("li").addClass("collapsed");
+                            selected_hospital_array.splice(target.closest("li").index(),1)
+                            this.events.cancel();
+                            e.event.stopPropagation();
+                        } else if (button[0]) {
+                            button.hide();
+                            
+                            //prevent `swipe`
+                            this.events.cancel();
+                        } else {
+                            listview.items().find("[data-role=button]:visible").hide();
+                        }
+                    }
+                }                
+            </script>
+        </div>
+    
+    </body>
+</html>

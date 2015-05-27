@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div data-role="view" data-stretch="true" data-init="sign_in">
+            <div style="position: absolute; height:100%; width:100%">
+                
+                <div class="logo_div">
+
+                    </div>
+            <div class="text_launch_page">
+                <h3 style="text-align: center; font-size:18px">SIGN IN WITH EMAIL</h3>
+                
+                <div id="form">
+                    <input type="email" id="user_name" name="email" class="k-textbox input_sign_in" placeholder="e-mail" required style="width:80%; margin-left:10%"/>
+                   
+                        <input type="password" id="pass_word" name="fullname" class="k-textbox input_sign_in" placeholder="Password" required data-email-msg="Enter" style="width:80%; margin-left:10%" />
+                    
+                </div>
+                        
+                 
+                <h2 style="text-align: center">
+                    FORGOT YOUR PASSWORD <i>
+                        <u>
+                            TAP HERE
+                            </u>
+                    </i>
+                </h2>
+                
+                <!-- <div>
+                <h4>OR USE OUR SOCIAL MEDIA ACCOUNT</h4>
+                <a href="index.html" data-role="button" data-inline="true"  data-mini="true" data-wrapper-class="btn_social"></a>
+                <a href="index.html" data-role="button" data-inline="true"  data-mini="true" data-wrapper-class="btn_social"></a>
+                <a href="index.html" data-role="button" data-inline="true"  data-mini="true" data-wrapper-class="btn_social"></a>
+                <a href="index.html" data-role="button" data-inline="true"  data-mini="true" data-wrapper-class="btn_social"></a>
+                </div> -->
+            </div>
+            <div class="maybe-div">
+                <a data-role="button" id="btn-sign-in" class="btn_sign_in">SIGN IN</a>
+                    </div>
+            <div class="maybe-div" style="margin-top:0%">
+                <a href="sign-in.html" data-role="button" class="btn_sign_in">MAYBE LATER</a>
+            </div>
+        </div><!-- /content -->
+            <script>
+                var email_validator = $("#user_name").kendoValidator().data("kendoValidator"); 
+                var validator = $("#form").kendoValidator().data("kendoValidator"); 
+                
+                function sign_in(){
+                    
+                    
+                    
+                    $("#user_name").on("keyup", function () {
+                            if (email_validator.validate()) {
+                               $("#user_name").css("border-color","#f4f4f4");
+                            } else {
+                                $("#user_name").css("border-color","red");
+                            }
+                        });
+                   
+                        $("#btn-sign-in").on("click", function () {
+                            if ($.trim($("#user_name").val()).length == 0) {
+                               navigator.notification.alert(
+                                    "Email can not be empty",             // the message
+                                    function() {},                      // a callback
+                                    "NET PROMOTER", // a title
+                                    "OK"                                // the button text
+                                );
+                            }else if(!email_validator.validate()){
+                                navigator.notification.alert(
+                                    "Email is invalid..",             // the message
+                                    function() {},                      // a callback
+                                    "NET PROMOTER", // a title
+                                    "OK"                                // the button text
+                                );
+                            }else if($.trim($("#pass_word").val()).length == 0){
+                               navigator.notification.alert(
+                                    "Password can not be empty",             // the message
+                                    function() {},                      // a callback
+                                    "NET PROMOTER", // a title
+                                    "OK"                                // the button text
+                                );
+                            } else{
+                               
+        displayLoading(document.body);
+                         var u_name = $("#user_name").val();
+                                var p_word = $("#pass_word").val();
+								var response = false; 
+								$.ajax({
+                               type: "GET",
+                               url: "http://209.235.175.200:81/api/NetPromoter?UserName="+u_name+"&Password="+p_word,
+                               success: function(data) {
+                                            if(data){
+                                   app.navigate("index2.html");
+                               hideLoading(document.body);
+                               }else{
+                                   hideLoading(document.body);
+                                   navigator.notification.alert(
+                                    "Authentication failed",             // the message
+                                    function() {},                      // a callback
+                                    "NET PROMOTER", // a title
+                                    "OK"                                // the button text
+                                );
+                               }
+                                        },
+                                error: function(data){
+                                    hideLoading(document.body);
+                                                navigator.notification.alert(
+                                                "An error occured while connecting to the server",             // the message
+                                                function() {},                      // a callback
+                                                "NET PROMOTER", // a title
+                                                "OK"                                // the button text
+                                            );
+                                    }
+                                            
+                                
+							});
+                               
+                                //app.navigate("index2.html");
+                            }
+                        });
+                    
+                    
+                }
+                  
+                
+            </script>
+            <style>
+               .k-widget.k-tooltip-validation {
+-webkit-box-shadow: none;
+box-shadow: none;
+display: none !important;
+}
+            </style>
+        </div>
+           
+    </body>
+</html>

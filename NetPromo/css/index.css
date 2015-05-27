@@ -1,0 +1,258 @@
+    .km-ios #loading .km-content
+    {
+        background: transparent;
+    }
+
+    #loading .km-content
+    {
+        text-align: center;
+    }
+
+    #show
+    {
+        margin-top: 100px;
+        font-size: 1.2em;
+    }
+
+    /* Example Counter */
+    .km-meego h1.loaderHeading,
+    .km-blackberry h1.loaderHeading
+    {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        width: 1em;
+        left: 50%;
+        height: 1em;
+        top: 50%;
+        font-size: 1.2rem;
+        margin: -.65em 0 0 -.5em;
+    }
+
+    .km-material h1.loaderHeading,
+    .km-flat h1.loaderHeading,
+    .km-android h1.loaderHeading,
+    .km-wp h1.loaderHeading
+    {
+        display: block;
+    }
+
+    .km-ios h1.loaderHeading
+    {
+    	font-size: 1rem;
+    }
+    .km-meego h1.loaderHeading,
+    .km-blackberry h1.loaderHeading
+    {
+        font-size: 1.5rem;
+    }
+
+    .km-android-light h1.loaderHeading
+    {
+        color: #222;
+    }
+
+
+
+
+
+/* Portrait layout (default) */
+.ui-content {
+  border-width: 0;
+  overflow: visible;
+  
+  padding: 0px;
+}
+.app {
+	position: absolute;
+    height:100%;
+	width: 100%
+}
+
+.logo_div {
+    background:url(../img/logo.svg) no-repeat center center;
+	
+    /* position:relative; */
+	margin-top : 20%;
+	margin-left: 15%;
+	text-align: center;
+	height: 20%;
+	width: 70%;
+	border-left:15%;
+}
+
+.text_launch_page{
+	position:relative;
+	/* text-align: center; */
+	margin-top: 4%;	
+    height:35%;
+	margin-left: 11%;
+	width: 80%;
+}
+
+.maybe-div{
+	position:relative;
+	text-align:center;
+    margin-top:6%;
+    height:10%;
+	width: 100%;
+}
+
+.social-div{
+	position:relative;
+	margin-top: 5%;	
+    height:10%;
+	margin-left: 16%;
+	width: 70%;
+}
+
+.btn-theme{
+	text-align:center;
+    border:none;
+    border-radius:5px !important;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+ }
+ 
+ .header-search{
+	height:10%;
+	width: 100%;
+ 
+ }
+ .ui-field-contain, fieldset.ui-field-contain {
+  padding: .2em 0;
+  margin: 0;
+  border-width: 0 0 0 0;
+  overflow: visible;
+}
+
+.list_hospital{
+	position:relative;
+	text-align: center;
+	height:40%;
+	margin-left:1%;
+	width: 98%;
+}
+
+.btn_social{
+	background-image:url("../img/social_media/facebook.png");
+	
+	}
+	
+	.ui-listview-filter .ui-input-search  {
+	  padding: 0 30px;
+	  margin: .5em 0;
+	  background-image: none;
+	  position: relative;
+	  border-radius: 4px;
+	  display:none;
+	}
+	
+	.ui-btn-up-a {
+			  border: 0px solid #111;
+			  background: #333;
+			  font-weight: normal;
+			  text-shadow: 0 0px 0px #111;
+			 
+			}
+p{
+
+text-align: left; 
+
+margin-top: .5;
+
+}
+.search_hospital{
+	width: 70%;
+	float : left;
+}
+.ui-listview-inset .ui-li {
+	  border-right-width: 1px;
+	  border-left-width: 1px;
+	  background-color: darkgray;
+	  margin-bottom: 1%;
+	  border-radius: 5px;
+}
+
+.ui-checkbox .ui-btn-icon-left .ui-icon, .ui-radio .ui-btn-icon-left .ui-icon {
+  left: 15px;
+  border-radius: 100%;
+  border-style: solid;
+  border-color:black;
+}
+.ui-checkbox-on .ui-icon, .ui-radio-on .ui-icon {
+  background-color: black;
+}
+.ui-btn.ui-checkbox-off:after {
+  background-color: #666;
+  background-color: rgba(253, 253, 253, 0.3);
+}
+
+.ui-filterable{
+			display: none;
+		}
+h1 {
+	
+    font-size: 11px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    /* padding:0px; */
+    text-align:left;
+}
+
+h2{
+	text-align: center;
+    font-size:10px;
+    font-weight:normal;
+    
+	/* margin:4%; */
+    overflow:visible;
+    padding:0px;
+    text-align:left;
+}
+
+h3{
+	text-align: center;
+    font-size:24px;
+    font-weight:normal;
+    margin:4%;
+    overflow:visible;
+    padding:0px;
+
+}
+
+h4{
+	text-align: left;
+    font-size:20px;
+    font-weight:normal;
+    margin:4%;
+    overflow:visible;
+    padding:0px;
+    
+}
+
+
+.btn_sign_in{
+    width:50%;
+}		
+
+.input_sign_in{
+    width:90%;
+    margin-bottom:5%
+}		
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+}

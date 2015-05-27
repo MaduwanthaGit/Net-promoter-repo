@@ -1,0 +1,89 @@
+
+        <div data-role="view" data-stretch="true" data-reload="true" id="chart_view">
+            <div
+                data-role="scrollview"
+                id="scrollview"
+                data-change="dataChange"
+                data-content-height="100%" style="width:100%"
+                data-template="scrollview-template"
+                data-source="dataSource">
+            </div>
+            <script id="scrollview-template" type="text/x-kendo-template">
+                <div  style=" height:100%" >
+                    <p>#= name #</p>
+                    <p>#= add #</p>
+                    <p>#= phone_no #</p>                    
+                    <div id="chart">
+                   		#=createChart(name)# 
+                    </div>
+                </div>
+            
+            </script>
+            
+            <style scoped>
+              #scrollview-home .photo
+                {
+                    margin: 0;
+                    height: 100%;
+                    display: inline-block;
+                    -webkit-background-size: auto 100%;
+                    background-size: auto 100%;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                }            
+                
+                .km-scrollview > [data-role=page]
+                {
+                    
+                    white-space: normal;
+                    
+                }
+            </style>
+            <script>
+                dataSource = new kendo.data.DataSource({data:selected_hospital_array});//selected_hospital_array is the data set looks like [{name: 1,add: 1}, {name: 2,add: 2}, {name: 3,add: 3}...]
+                var chart;
+                function dataChange() {
+                   // createChart();
+                   // I tried this and it also prodused the same error 
+                }
+                
+                function createChart(name) {
+                   
+                   chart =  $("#chart").kendoChart({
+                                               title: {
+                            text: name
+                        },
+                                               legend: {
+                            position: "bottom"
+                        },
+                                               seriesDefaults: {
+                            type: "column"
+                        },
+                                               series: [{
+                                                           name: "Total Visits",
+                                                           data: [56000, 63000, 74000, 91000, 117000, 138000]
+                                                       }, {
+                                                           name: "Unique visitors",
+                                                           data: [52000, 34000, 23000, 48000, 67000, 83000]
+                                                       }
+                        ],
+                                               valueAxis: {
+                            line: {
+                                                           visible: false
+                                                       }
+                        },
+                                               categoryAxis: {
+                            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                            majorGridLines: {
+                                                           visible: false
+                                                       }
+                        },
+                                               tooltip: {
+                            visible: true,
+                            format: "{0}"
+                        }
+                                           });
+                    return chart;
+                }
+            </script>
+        </div>

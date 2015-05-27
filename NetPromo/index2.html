@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+
+        <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
+        <title></title>
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.common-material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.dataviz.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.dataviz.material.min.css" />
+        <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.408/styles/kendo.mobile.all.min.css" />
+
+        <script src="http://cdn.kendostatic.com/2015.1.408/js/jquery.min.js"></script>
+        <script src="http://cdn.kendostatic.com/2015.1.408/js/kendo.all.min.js"></script>
+    </head>
+    <body>
+
+        <div data-role="view" id="listview-templates" data-init="mobileListViewTemplatesInit2" data-title="ListView" data-show="onShow">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <a data-role="backbutton" data-align="left" >Back</a>
+                    STATES
+                    
+                </div>
+            </div>
+            <ul id="flat-listview" data-item-change="itemChange"></ul>
+
+            <div data-role="footer" data-style="inset">
+                <div data-role="navbar">
+                    NET PROMOTER SCORE
+                </div>
+            </div>
+
+            <style scoped>
+               .km-ios7 .km-back:before {
+                                
+                                height: 1em;
+                                
+                                }
+            </style>
+            
+            <script type="text/x-kendo-template" id="customListViewTemplate">
+                <h3 class="item-title" style="float:left">${name}</h3>
+                <p class="item-info" style="float:right">${count}</p>
+
+            </script>
+
+            <script type="text/javascript">
+                //var app = new kendo.mobile.Application(document.body);
+               
+                var selected_hospital_array = [];
+                var dataSource;
+                var Selected_item = function(name, count,score) {
+                    this.name = name;
+                    this.count = count;
+                    this.score = score;
+                };
+            
+                
+                
+                function mobileListViewTemplatesInit2() {
+                
+                selected_hospital_array = [];
+                    $.ajax({
+                               type: "GET",
+                               url: "./xml/Statecount.xml",
+                               success: function(data) {
+                                   $(data).find("State").each(function() {
+                                       state_arr.push(new Selected_item($(this).find("Name").text(), $(this).find("Count").text(),$(this).find("score").text()));		
+                                   });
+                                   
+                                   $("#flat-listview").kendoMobileListView({
+                                                                               //dataSource: data,
+                                                                               dataSource: kendo.data.DataSource.create({data: state_arr}),
+                                                                               template: $("#customListViewTemplate").html(),
+                                                                               click: function(e) {
+                                                                                   var index = $(e.item).index();
+                                                                                   dataItem = this.dataSource.view()[index];
+                                                                                   state = dataItem.name;
+                                                                                   score =  dataItem.score;
+                
+                                                                                   app.navigate("state_hospital.html?name='"+state+"'");
+                                                                                   console.log("id: " + dataItem.name + ", text: " + dataItem.name);
+                                                                               },
+                                                                               filterable: {
+                                           field: "name",  // dummy field to get the filterable working
+                                           placeholder: "Name..."
+                                       },
+                                                                           
+                                                                           });
+                               },
+                               error: function(ts) {
+                                   //alert("ererer");
+                               }
+                           });
+                    
+                    $('[type="search"]').on("keyup", function () {
+                        var filterTerm = $(this).val();
+                        $("#flat-listview").data("kendoMobileListView").dataSource.filter({
+                                                                                              logic: "or",
+                                                                                              filters: [
+                                { field: "name", operator: "contains", value: filterTerm }
+                            
+                            ]
+                                                                                          });
+                    });
+                    
+                    $("#search")
+                        .kendoAutoComplete({
+                                               dataSource: selected_hospital_array
+                                           })
+                        .closest(".k-widget")
+                        .addClass("k-textbox k-space-right")
+                        .append('<span class="k-icon k-i-search"></span>');
+                }
+            </script>
+
+        </div>
+
+    </body>
+</html>
