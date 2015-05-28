@@ -22,7 +22,7 @@
                 style=" height: 100%; width:100%; position:absolute">
 
                 <div  style=" height:100%; width:100%; position:relative" >
-                    <div style="width:80%; margin-left:10%;margin-top:15%; height:15%; position:relative text-align:center">
+                    <div style="width:80%; margin-left:10%;margin-top:15%; height:20%; position:relative text-align:center">
                         <p id="name" style="text-align: center;  font-size: larger;"></p>
                         <p id="addb" style="text-align: center; font-family: sans-serif; font-size: samll;"></p>
                         <p id="phone_no" style="display:none"></p>
@@ -67,7 +67,7 @@
 
             </div>
             <div data-role="footer" data-style="inset">
-                <div data-role="navbar">
+                <div data-role="navbar"  style="border-color: transparent; background-color: transparent;">
                     <ol class="km-pages" style=" height:5%; width:100%; position:relative" id="pager">
 
                     </ol>
@@ -80,14 +80,6 @@
                     display: none;    
                 }
                 
-                .km-ios7 .km-navbar, .km-ios7 .k-toolbar, .km-ios7 .km-tabstrip
-                {
-                    border-color: transparent;
-                }
-                .km-ios7 .km-navbar, .km-ios7 .k-toolbar, .km-ios7 .km-tabstrip
-                {
-                    background-color: transparent;
-                }
                 .devider_line
                 { 
                     background: black;
@@ -102,8 +94,6 @@
                 var compareListName = []; 
                 
                 function init() {
-                
-                console.log(selected_hospital_array);
                 
                     for (i; i<= selected_hospital_array.length; i++) {
                 
@@ -129,89 +119,90 @@
                 
                 
                 function createChart(top_box, passive, detector) {
+                    
                     chart = $("#chart").kendoChart({
                                                        title: {
-                            text: ""
-                        },
-                            
+                                                            text: ""
+                                                        },
                                                        seriesDefaults: {
-                            type: "column",
-                            labels: {
-                                                                   visible: true,
-                                                                   font: "10px Arial",
-                                                                   format: "{0}%",
-                                                                   background: "transparent"
-                                                               }
-                        },
+                                                                    type: "column",
+                                                                    labels: {
+                                                                           visible: true,
+                                                                           font: "10px Arial",
+                                                                           format: "{0}%",
+                                                                           background: "transparent"
+                                                                           }
+                                                                    },
                                                        seriesColors: ["#79747A", "#919690","red"],
                                                        series: [{ data: [parseInt(top_box),parseInt(passive),parseInt(detector)]}],
                                                        valueAxis: {
-                            min: 0, // added this line
-                            max: 102, // added this line
-                            majorGridLines: {
-                                                                   visible: false
-                                                               },
-                            visible: false
-                        },
+                                                                min: 0,
+                                                                max: 102,
+                                                                majorGridLines: {
+                                                                       visible: false
+                                                                       },
+                                                                visible: false
+                                                            },
                                                        categoryAxis: {
-                            categories: ["Promoters","Passives","Detractors"],
-                            labels: { rotation: -45 },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                categories: ["Promoters","Passives","Detractors"],
+                                                                labels: { rotation: -45 },
+                                                                axisCrossingValue: [0, 0, 100, 100],
+                                                                line: {
                                                                    visible: false
-                                                               },
-                            majorGridLines: {
+                                                                   },
+                                                                majorGridLines: {
                                                                    visible: false
-                                                               }
-                        },
+                                                                   }
+                                                                },
                                                        tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                visible: false,
+                                                                format: "{0}"
+                                                            }
                                                    });
                     return chart;
                 }
                     
                 function createChartNPS(nps) {
+                    
                     chartNPS = $("#chart_nps").kendoChart({
                                                               title: {
-                            text: ""
-                        },
+                                                                    text: ""
+                                                                },
                             
                                                               seriesDefaults: {
-                            type: "column",
-                            labels: {
+                                                                        type: "column",
+                                                                        labels: {
                                                                           visible: true,
                                                                           font: "10px Arial",
                                                                           format: "{0}%",
                                                                           background: "transparent"
                                                                       }
-                        },
+                                                                    },
                                                               seriesColors: ["black"],
                                                               series: [{ data: [parseInt(nps)]}],
                                                               valueAxis: {
-                            min: 0, // added this line
-                            max: 102, // added this line
-                            majorGridLines: {
+                                                                        min: 0, // added this line
+                                                                        max: 102, // added this line
+                                                                        majorGridLines: {
                                                                           visible: false
-                                                                      },
-                            visible: false
-                        },
+                                                                          },
+                                                                        visible: false
+                                                                    },
                                                               categoryAxis: {
-                            categories: ["NPS"],
-                            labels: { rotation: 0 },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                        categories: ["NPS"],
+                                                                        labels: { rotation: 0 },
+                                                                        axisCrossingValue: [0, 0, 100, 100],
+                                                                        line: {
                                                                           visible: false
-                                                                      },
-                            majorGridLines: {
+                                                                          },
+                                                                        majorGridLines: {
                                                                           visible: false
-                                                                      }
-                        },
+                                                                          }
+                                                                       },
                                                               tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                        visible: false,
+                                                                        format: "{0}"
+                                                                    }
                                                           });
                     return chartNPS;
                 }
@@ -220,43 +211,43 @@
                     
                     chartLocal = $("#chart_local").kendoChart({
                                                                   title: {
-                            text: ""
-                        },
+                                                                        text: ""
+                                                                    },
                             
                                                                   seriesDefaults: {
-                            type: "column",
-                            labels: {
+                                                                        type: "column",
+                                                                        labels: {
                                                                               visible: true,
                                                                               font: "10px Arial",
                                                                               format: "{0}%",
                                                                               background: "transparent"
                                                                           }
-                        },
+                                                                      },
                                                                   seriesColors: ["#919690", "#919690","red"],
                                                                   series: [{ data: [parseInt(nps)]}],
                                                                   valueAxis: {
-                            min: 0, // added this line
-                            max: 102, // added this line
-                            majorGridLines: {
+                                                                            min: 0, // added this line
+                                                                            max: 102, // added this line
+                                                                            majorGridLines: {
                                                                               visible: false
-                                                                          },
-                            visible: false
-                        },
+                                                                              },
+                                                                            visible: false
+                                                                        },
                                                                   categoryAxis: {
-                            categories: ["National"],
-                            labels: { rotation: -45 },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                            categories: ["National"],
+                                                                            labels: { rotation: -45 },
+                                                                            axisCrossingValue: [0, 0, 100, 100],
+                                                                            line: {
                                                                               visible: false
-                                                                          },
-                            majorGridLines: {
+                                                                              },
+                                                                   majorGridLines: {
                                                                               visible: false
-                                                                          }
-                        },
+                                                                              }
+                                                                            },
                                                                   tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                            visible: false,
+                                                                            format: "{0}"
+                                                                        }
                                                               });
                     return chartLocal;
                 }
@@ -265,43 +256,43 @@
                     
                     chartLocal = $("#chart_local1").kendoChart({
                                                                   title: {
-                            text: ""
-                        },
+                                                                        text: ""
+                                                                    },
                             
                                                                   seriesDefaults: {
-                            type: "column",
-                            labels: {
+                                                                        type: "column",
+                                                                        labels: {
                                                                               visible: true,
                                                                               font: "10px Arial",
                                                                               format: "{0}%",
                                                                               background: "transparent"
                                                                           }
-                        },
+                                                                    },
                                                                   seriesColors: ["#919690", "#919690","red"],
                                                                   series: [{ data: [parseInt(nps)]}],
                                                                   valueAxis: {
-                            min: 0, // added this line
-                            max: 102, // added this line
-                            majorGridLines: {
+                                                                        min: 0, // added this line
+                                                                        max: 102, // added this line
+                                                                        majorGridLines: {
                                                                               visible: false
                                                                           },
-                            visible: false
-                        },
+                                                                        visible: false
+                                                                    },
                                                                   categoryAxis: {
-                            categories: ["National"],
-                            labels: { rotation: -60 },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                        categories: ["National"],
+                                                                        labels: { rotation: -60 },
+                                                                        axisCrossingValue: [0, 0, 100, 100],
+                                                                        line: {
                                                                               visible: false
-                                                                          },
-                            majorGridLines: {
+                                                                              },
+                                                                        majorGridLines: {
                                                                               visible: false
-                                                                          }
-                        },
+                                                                              }
+                                                                        },
                                                                   tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                        visible: false,
+                                                                        format: "{0}"
+                                                                    }
                                                               });
                     return chartLocal;
                 }
@@ -309,43 +300,43 @@
                 function createChartState(nps) {
                     chartState = $("#chart_state").kendoChart({
                                                                   title: {
-                            text: ""
-                        },
+                                                                        text: ""
+                                                                    },
                             
                                                                   seriesDefaults: {
-                            type: "column",
-                            labels: {
+                                                                        type: "column",
+                                                                        labels: {
                                                                               visible: true,
                                                                               font: "10px Arial",
                                                                               format: "{0}%",
                                                                               background: "transparent"
                                                                           }
-                        },
+                                                                        },
                                                                   seriesColors: ["#919690", "#919690","red"],
                                                                   series: [{ data: [parseInt(nps)]}],
                                                                   valueAxis: {
-                            min: 0, // added this line
-                            max: 102, // added this line
-                            majorGridLines: {
+                                                                        min: 0, // added this line
+                                                                        max: 102, // added this line
+                                                                        majorGridLines: {
                                                                               visible: false
                                                                           },
-                            visible: false
-                        },
+                                                                        visible: false
+                                                                    },
                                                                   categoryAxis: {
-                            categories: ["State"],
-                            labels: { rotation: -45 },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                        categories: ["State"],
+                                                                        labels: { rotation: -45 },
+                                                                        axisCrossingValue: [0, 0, 100, 100],
+                                                                        line: {
                                                                               visible: false
                                                                           },
-                            majorGridLines: {
+                                                                        majorGridLines: {
                                                                               visible: false
                                                                           }
-                        },
+                                                                    },
                                                                   tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                        visible: false,
+                                                                        format: "{0}"
+                                                                    }
                                                               });
                     return chartState;
                 }
@@ -355,48 +346,46 @@
                     
                     chartCompare = $("#chart_compare_div").kendoChart({
                                                               title: {
-                            text: ""
-                        },
+                                                                    text: ""
+                                                                },
                             
                                                               seriesDefaults: {
-                            type: "column",
-                            labels: {
+                                                                        type: "column",
+                                                                        labels: {
                                                                           visible: true,
                                                                           font: "10px Arial",
                                                                           format: "{0}%",
                                                                           background: "transparent"
-                                                                      }
-                        },
+                                                                          }
+                                                                    },
                                                               seriesColors: ["black"],
                                                               series: [{ data: nps}],
                                                               valueAxis: {
-                                                                  min: 0, // added this line
-                            max: 102, // added this line
-                            
-                            majorGridLines: {
+                                                                    min: 0, // added this line
+                                                                    max: 102, // added this line    
+                                                                    majorGridLines: {
                                                                           visible: false
                                                                       },
-                            visible: false
-                        },
+                                                                    visible: false
+                                                                },
                                                               categoryAxis: {
-                            categories: name,
-                            labels: { rotation: -60,
-                                      
-                                       font: "7px Arial,Helvetica,sans-serif"
-       
-                            },
-                            axisCrossingValue: [0, 0, 100, 100],
-                            line: {
+                                                                    categories: name,
+                                                                    labels: { 
+                                                                            rotation: -60,
+                                                                            font: "7px Arial,Helvetica,sans-serif"
+                                                                        },
+                                                                    axisCrossingValue: [0, 0, 100, 100],
+                                                                    line: {
                                                                           visible: false
                                                                       },
-                            majorGridLines: {
+                                                                    majorGridLines: {
                                                                           visible: false
                                                                       }
-                        },
+                                                                    },    
                                                               tooltip: {
-                            visible: false,
-                            format: "{0}"
-                        }
+                                                                    visible: false,
+                                                                    format: "{0}"
+                                                                }
                                                           });
                     return chartCompare;
                 }

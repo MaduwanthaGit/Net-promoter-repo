@@ -47,7 +47,9 @@
                         <p>
                             Connect to your
                             <B>Perform suite</B><br>
-                         subscription and enhance the tools at your fingertips</p>
+                             subscription and enhance the tools at your fingertips
+                            
+                        </p>
 
                     </div>
                 </div>
@@ -68,7 +70,6 @@
                         <a href="sign_in.html" data-role="button" data-theme="a" class="btn-theme" data-transition="fade" style="width:50%; margin-top:0%">SIGN IN</a>
                     </div>
                     <div class="maybe-div">
-
                         <a href="sign_in.html" data-role="button" class="btn-theme" style="width:50%; margin-top:2%">MAYBE LATER</a>
                     </div>
                 </div>
@@ -183,42 +184,30 @@
         </div>
         
         <script>
-           if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-        document.addEventListener("deviceready", onDeviceReady, false);
-    } else {
-        onDeviceReady();
-    }
-    function onDeviceReady() {
-        console.log("fired"+navigator.notification);
-    }
-           
-            var app = new kendo.mobile.Application(document.body, {
+        var app = new kendo.mobile.Application(document.body, {
                                                        
-                                                       statusBarStyle: "black",
-                loading: "<h1>Please wait...</h1>"
-                                                   });
-             
-             var state = "Alaska";
-            var score = 0;
-            var national = 91;
+                                                        statusBarStyle: "black",
+                                                        loading: "<h1>Please wait...</h1>"
+                                                   });    
+         
+        var u_name = "";
+        var state = "Alaska";
+        var score = 0;
+        var national = 91;
+        var selected_hospital_array = [];
+        var state_arr = [];
+        var selected_hos_list_arr = [];
             
-            var selected_hospital_array = [];
-            var state_arr = [];
-            
-            var Selected_item = function(name, NPS, Promoters, Passives, Detectors, add) {
-                this.name = name;
-                this.NPS = NPS;
-                this.Promoters = Promoters;
-                this.Passives = Passives;
-                this.Detectors = Detectors;
-                this.add = add;
-            };
-            
-            function addToList(name, NPS, Promoters, Passives, Detectors, add, phone,score,national) {
-                selected_hospital_array.push(new selected_hos(name, add, phone, NPS, Promoters, Passives, Detectors,score,national));
-            }
-            
-            var selected_hos = function(name, add, phone_no, nps, top_box, passive, detector,score,national) {
+        var Selected_item = function(name, NPS, Promoters, Passives, Detectors, add) {
+            this.name = name;
+            this.NPS = NPS;
+            this.Promoters = Promoters;
+            this.Passives = Passives;
+            this.Detectors = Detectors;
+            this.add = add;
+        };        
+        
+        var selected_hos = function(name, add, phone_no, nps, top_box, passive, detector,score,national,user_name) {
                 this.name = name;
                 this.add = add;
                 this.phone_no = phone_no;
@@ -228,9 +217,12 @@
                 this.detector = detector;
                 this.score = score;
                 this.national = national;
+                this.user_name = user_name;
             };
             
-            var selected_hos_list_arr = [];
+            function addToList(name, NPS, Promoters, Passives, Detectors, add, phone,score,national,user_name) {
+                selected_hospital_array.push(new selected_hos(name, add, phone, NPS, Promoters, Passives, Detectors,score,national,user_name));
+            }
             
             function displayLoading(target) {
                     var element = $(target);
@@ -241,9 +233,29 @@
                     kendo.ui.progress(element, false);
                 }
             
-       
             
-    
+                 if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+                    document.addEventListener("deviceready", onDeviceReady, false);
+                } else {
+                    onDeviceReady();
+                }
+                function onDeviceReady() {
+                    console.log("fired"+navigator.notification);
+                }
+            
+                
+                $.ajax({
+                               type: "GET",
+                               url: "./xml/NationalScore.xml",
+                               success: function(data) {
+                                            $(data).find("National").each(function() {
+                                                national = $(this).find("Score").text();
+                                                //alert(national);
+                                            });
+                                        },
+                                error :{}
+                });
+                      
         </script>
     
     </body>

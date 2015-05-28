@@ -85,8 +85,8 @@
                                 );
                             } else{
                                
-        displayLoading(document.body);
-                         var u_name = $("#user_name").val();
+                                displayLoading(document.body);
+                                u_name = $("#user_name").val();
                                 var p_word = $("#pass_word").val();
 								var response = false; 
 								$.ajax({
@@ -94,8 +94,29 @@
                                url: "http://209.235.175.200:81/api/NetPromoter?UserName="+u_name+"&Password="+p_word,
                                success: function(data) {
                                             if(data){
-                                   app.navigate("index2.html");
-                               hideLoading(document.body);
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    traditional: true,
+                                                    url: 'http://209.235.175.200:81/api/NetPromoter?UserName=netpromoter@test.com',
+                                                    contentType: 'application/json; charset=utf-8',
+                                                    dataType: 'json',
+                                                    success: function (result) {
+                                                        
+                                                        for(var i in result){
+                                                            addToList(result[i].Name, result[i].Nps, result[i].TopBox, result[i].Passive, result[i].Detector, result[i].Address, result[i].PhoneNo,result[i].Score,result[i].NationalScore,result[i].UserName);
+                                                            
+                                                        }
+                                                        console.log(selected_hospital_array);
+                                                        app.navigate("index2.html")
+                                                        hideLoading(document.body);
+                                                    },
+                                                    error: function (result) {
+                                                        alert(result);
+                                                        hideLoading(document.body);
+                                                    }
+                                                });
+                                   
+                               
                                }else{
                                    hideLoading(document.body);
                                    navigator.notification.alert(
@@ -130,10 +151,10 @@
             </script>
             <style>
                .k-widget.k-tooltip-validation {
--webkit-box-shadow: none;
-box-shadow: none;
-display: none !important;
-}
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                display: none !important;
+                }
             </style>
         </div>
            

@@ -10,8 +10,8 @@
             <div data-role="header">
                 <div data-role="navbar">
                     <a data-role="backbutton" data-align="left">Back</a>
-                    SELECTED
-                    <a data-role="button" data-align="right" href="test.html">Next</a>
+                        SELECTED
+                    <a data-role="button" data-align="right" data-click="next">Next</a>
                 </div>
             </div>
 
@@ -24,18 +24,20 @@
                     NET PROMOTER SCORE
                 </div>
             </div>
+            
             <script type="text/x-kendo-template" id="selected_hospatal_list_Template">
                 <div data-align="left" style="float:left; max-width:75%">
-                <h1><b>${name}</b></h1>
-                <h1>${add}</h1>
-                <h1>${phone_no}</h1>
+                    <h1><b>${name}</b></h1>
+                    <h1>${add}</h1>
+                    <h1>${phone_no}</h1>
                 </div>
                 <div data-align="right" style="float:right">
-                <p data-align="right">${nps} %</p>
+                    <p data-align="right">${nps} %</p>
                 </div>
                 
                 <a href="\\#" data-role="button" class="delete" ><p>Delete</p></a>
             </script>
+            
             <style scoped>
                 #selected_hospatal_list .delete
                 {
@@ -73,10 +75,8 @@
                                                                          dataSource: kendo.data.DataSource.create({data: selected_hospital_array}),
                                                                          template: $("#selected_hospatal_list_Template").html(),
                                                                          change : function() {
-                                                                             // Find selected 
                                                                              var selected = this.select();
-                                                                             
-                                                                         }
+                                                                             }
                                                                      
                                                                      }).kendoTouch({
                                                                                        filter: ">li",
@@ -103,14 +103,30 @@
                             e.event.stopPropagation();
                         } else if (button[0]) {
                             button.hide();
-                            
-                            //prevent `swipe`
                             this.events.cancel();
                         } else {
                             listview.items().find("[data-role=button]:visible").hide();
                         }
                     }
-                }                
+                } 
+                
+                function next(){
+                   
+                     $.ajax({
+                        type: 'POST',
+                        traditional: true,
+                        url: 'http://209.235.175.200:81/api/NetPromoter',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify(selected_hospital_array),
+                        success: function (result) {
+                            app.navigate("test.html");
+                        },
+                        error: function (result) {
+                            alert("bn"+result);
+                        }
+                    });
+                }
             </script>
         </div>
     
